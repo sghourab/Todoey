@@ -11,9 +11,15 @@ import UIKit
 class ToDoListViewController: UITableViewController {
 
     var itemArray: [String] = ["work", "clean", "mother", "wife"]
+    
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
     }
 
     //MARK - TABLEVIEW DATASOURCE METHODS
@@ -56,9 +62,11 @@ class ToDoListViewController: UITableViewController {
             return
         }
             self.itemArray.append(itemToAdd)
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
             self.tableView.reloadData()
             
         }
+        
     let cancelAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
         
     alert.addAction(saveAction)
